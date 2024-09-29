@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  go-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: go-app
+    networks:
+      - go-app-shared-network  # Connects to the existing Redis network
+    environment:
+      - REDIS_HOST=redis-service  # Assuming the Redis container's hostname is redis-service
+      - REDIS_PORT=6379           # Default Redis port
+    env_file:                            # Load environment variables from .env file
+      - .env
+      
+networks:
+  go-app-shared-network:
+    external: true  # Indicates that the network is already created

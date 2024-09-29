@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis-service
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+      - ./entrypoint.sh:/entrypoint.sh  # Make sure the entrypoint script is mounted
+    entrypoint: ["/entrypoint.sh"]      # Use the entrypoint script
+    networks:
+      - go-app-shared-network
+    env_file:                            # Load environment variables from .env file
+      - .env
+
+networks:
+  go-app-shared-network:
+    external: true
+
+volumes:
+  redis-data:
+    driver: local
